@@ -1,11 +1,12 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { SensorRepo } from "./repository/sensor.repository";
 import { CreateSensorDTO } from "./dto/createSensor.dto";
 import { UpdateSensorDTO } from "./dto/updateSensor.dto";
+import { MonitoringPointRepo } from "src/monitoringPoint/repository/monitoringPoint.repository";
 
 @Injectable()
 export class SensorService {
-    constructor(private readonly sensorRepo: SensorRepo) { }
+    constructor(@Inject("SensorRepo") private readonly sensorRepo: SensorRepo, @Inject("MonitoringPointRepo") private readonly monitoringPoint: MonitoringPointRepo) { }
 
     async findManySensors() {
         return this.sensorRepo.findManySensors();
@@ -25,6 +26,11 @@ export class SensorService {
             throw new ConflictException(`Sensor with Uid ${data.sensorUid} already exists!`);
         }
 
+        const monitoringPointExists = await this.monitoringPoint.findMonitoringPointById(data.monitoringPointId);
+        if (monitoringPointExists) {
+            throw new ConflictException(`Sensor with Monitoring Point Id ${data.monitoringPointId} already exists!`);
+        }
+
         return this.sensorRepo.createSensor(data);
     }
 
@@ -40,6 +46,14 @@ export class SensorService {
                 throw new ConflictException(`Sensor with Uid ${data.sensorUid} already exists!`);
             }
         }
+
+        if (data.monitoringPointId) {
+            const sensorWithMonitoringPointId = await this.monitoringPoint.findMonitoringPointById(data.monitoringPointId);
+            if (sensorWithMonitoringPointId) {
+                throw new ConflictException(`Sensor with Monitoring Point Id ${data.monitoringPointId} already exists!`);
+            }
+        }   
+
         return await this.sensorRepo.updateSensor(data, id);
     }
 
