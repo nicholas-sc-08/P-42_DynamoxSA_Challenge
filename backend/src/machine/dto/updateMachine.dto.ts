@@ -1,10 +1,10 @@
-import { IsEnum, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { MachineType } from "@prisma/client";
 
 export class UpdateMachineDTO {
-    @IsOptional() @IsString()
+    @IsOptional() @IsString() @IsNotEmpty()
     name?: string;
 
-    @IsOptional() @IsEnum(MachineType)
+    @IsOptional() @IsEnum(MachineType) @IsNotEmpty()
     type?: MachineType;
 }

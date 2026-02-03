@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
 import { MachineService } from './machine.service';
 import { CreateMachineDTO } from './dto/createMachine.dto';
+import { UpdateMachineDTO } from './dto/updateMachine.dto';
 
 @Controller('machine')
 export class MachineController {
@@ -8,11 +9,27 @@ export class MachineController {
 
   @Get()
   async findAllMachines(@Query("userId") userId: string) {
-    return this.machineService.findAllMachines(userId);
+    return await this.machineService.findAllMachines(userId);
+  }
+
+  @Get(":id")
+  async findUniqueMachine(@Param("id") id: string) {
+    return await this.machineService.findUniqueMachine(id);
   }
 
   @Post()
   async createMachine(@Body() machine: CreateMachineDTO, userId: string) {
-    return this.machineService.createMachine(machine, userId);
+    return await this.machineService.createMachine(machine, userId);
+  }
+
+  @Put(":id")
+  async updateMachine(@Param("id") id: string, @Body() data: UpdateMachineDTO, @Request() req) {
+    const userId = req.user.id;
+    return await this.machineService.updateMachine(id, data, userId);
+  }
+
+  @Delete(":id")
+  async deleteMachine(@Param("id") id: string) {
+    return await this.machineService.deleteMachine(id);
   }
 }
