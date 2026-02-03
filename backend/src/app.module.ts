@@ -3,12 +3,14 @@ import { ConfigModule } from '@nestjs/config';
 import { MachineModule } from './machine/machine.module';
 import { PrismaService } from './prisma/client';
 import { UserModule } from './user/user.module';
+import { MonitoringPointModule } from './monitoringPoint/monitoringPoint.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, }),
     MachineModule,
-    UserModule
+    UserModule,
+    MonitoringPointModule
   ],
   providers: [PrismaService]
 })
