@@ -6,7 +6,7 @@ import { UpdateMachineDTO } from "../dto/updateMachine.dto";
 
 @Injectable()
 export class PrismaMachineRepo extends MachineRepo {
-    constructor(private prisma: PrismaService) {
+    constructor(private readonly prisma: PrismaService) {
         super();
     }
 
