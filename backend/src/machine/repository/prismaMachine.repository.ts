@@ -11,22 +11,26 @@ export class PrismaMachineRepo extends MachineRepo {
     }
 
     async findManyByUser(userId: string) {
-        return this.prisma.machine.findMany({ where: { userId }, orderBy: { createdAt: "desc" } });
+        return await this.prisma.machine.findMany({ where: { userId }, orderBy: { createdAt: "desc" } });
     }
 
-    async findUnique(id: string) {
-        return this.prisma.machine.findUnique({ where: { id } });
+    async findUniqueMachine(id: string) {
+        return await this.prisma.machine.findUnique({ where: { id } });
     }
 
-    async create(data: CreateMachineDTO & { userId: string }) {
-        return this.prisma.machine.create({ data });
+    async findMachineByName(name: string) {
+        return await this.prisma.machine.findUnique({ where: { name } });
     }
 
-    async update(data: UpdateMachineDTO, id: string) {
-        return this.prisma.machine.update({ where: { id }, data });
+    async createMachine(data: CreateMachineDTO & { userId: string }) {
+        return await this.prisma.machine.create({ data });
     }
 
-    async delete(id: string) {
-        this.prisma.machine.delete({ where: { id } });
+    async updateMachine(data: UpdateMachineDTO, id: string) {
+        return await this.prisma.machine.update({ where: { id }, data });
+    }
+
+    async deleteMachine(id: string) {
+        await this.prisma.machine.delete({ where: { id } });
     }
 }

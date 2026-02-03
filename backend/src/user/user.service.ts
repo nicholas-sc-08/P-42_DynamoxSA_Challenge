@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable } from "@nestjs/common";
+import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/createUser.dto";
 import { UserRepo } from "./repository/user.repository";
 import { BcryptService } from "src/bcrypt/bcrypt.service";
@@ -13,7 +13,12 @@ export class UserService {
     }
 
     async findUniqueUser(id: string) {
-        return await this.userRepo.findUniqueUser(id);
+        const user = await this.userRepo.findUniqueUser(id);
+
+        if (user) {
+            return user;
+        }
+        throw new NotFoundException(`User with the id ${id}, does not exists!`);
     }
 
     async createUser(data: CreateUserDTO) {
@@ -43,6 +48,12 @@ export class UserService {
     }
 
     async deleteUser(id: string) {
+        const userExists = await this.userRepo.findUniqueUser(id);
+
+        if (!userExists) {
+            throw new NotFoundException(`User with the id ${id} does not exists`);
+        }
         await this.userRepo.deleteUser(id);
+        return { message: `User with the id ${id} has been sucessfully deleted!`, statusCode: 200 }
     }
 }

@@ -5,6 +5,6 @@ export class CreateMachineDTO {
     @IsNotEmpty() @IsString()
     name: string;
 
-    @IsEnum(MachineType)
+    @IsEnum(MachineType, {message: "Machine type is invalid!"})
     type: MachineType;
 }
