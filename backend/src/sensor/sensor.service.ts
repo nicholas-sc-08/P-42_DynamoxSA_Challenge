@@ -21,7 +21,7 @@ export class SensorService {
 
     async createSensor(data: CreateSensorDTO) {
         const sensorAlreadyExists = await this.sensorRepo.findSensorByUid(data.sensorUid);
-        if(sensorAlreadyExists) {
+        if (sensorAlreadyExists) {
             throw new ConflictException(`Sensor with Uid ${data.sensorUid} already exists!`);
         }
 
@@ -30,8 +30,25 @@ export class SensorService {
 
     async updateSensor(data: UpdateSensorDTO, id: string) {
         const sensorExists = await this.sensorRepo.findUniqueSensor(id);
-        if(!sensorExists) {
+        if (!sensorExists) {
             throw new NotFoundException(`Sensor with id ${id} does not exists!`);
         }
+
+        if (data.sensorUid) {
+            const sensorWithUid = await this.sensorRepo.findSensorByUid(data.sensorUid);
+            if (sensorWithUid) {
+                throw new ConflictException(`Sensor with Uid ${data.sensorUid} already exists!`);
+            }
+        }
+        return await this.sensorRepo.updateSensor(data, id);
+    }
+
+    async deleteSensor(id: string) {
+        const sensorExists = await this.sensorRepo.findUniqueSensor(id);
+        if (sensorExists) {
+            await this.sensorRepo.deleteSensor(id);
+            return { message: "Sensor has been deleted sucessfully", statusCode: 200 }
+        }
+        throw new NotFoundException(`Sensor with id ${id} does not exists!`);
     }
 }
