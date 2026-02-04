@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, Request, UseGuards } from '@nestjs/common';
 import { MachineService } from './machine.service';
 import { CreateMachineDTO } from './dto/createMachine.dto';
 import { UpdateMachineDTO } from './dto/updateMachine.dto';
@@ -20,8 +20,8 @@ export class MachineController {
   }
 
   @Post()
-  async createMachine(@Body() machine: CreateMachineDTO) {
-    return await this.machineService.createMachine(machine, machine.userId);
+  async createMachine(@Body() machine: CreateMachineDTO, @Req() req) {
+    return await this.machineService.createMachine(machine, req.userId);
   }
 
   @Put(":id")

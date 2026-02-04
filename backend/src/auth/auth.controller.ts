@@ -11,6 +11,7 @@ export class AuthController {
         res.cookie("user_token", this.jwtService.sign(payload), {
             expiresIn: Date.now() + 3600000
         });
+        
         return { message: "The user id is 123 to manage the machines" };
     }
 
