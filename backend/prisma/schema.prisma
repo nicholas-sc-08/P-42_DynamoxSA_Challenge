@@ -68,7 +68,8 @@ model Sensor {
 
 model SensorData {
   id  String  @id @default(uuid())
-  value Float
+  temp Float?
+  vibration Float?
   timestamp DateTime
 
   sensorId  String
