@@ -4,9 +4,10 @@ import { MachineController } from './machine.controller';
 import { PrismaService } from 'src/prisma/client';
 import { PrismaMachineRepo } from './repository/prismaMachine.repository';
 import { PrismaUserRepo } from 'src/user/repository/prismaUser.repository';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   controllers: [MachineController],
-  providers: [MachineService, PrismaService, { provide: 'MachineRepo', useClass: PrismaMachineRepo }, { provide: "UserRepo", useClass: PrismaUserRepo }],
+  providers: [MachineService, PrismaService, { provide: 'MachineRepo', useClass: PrismaMachineRepo }, { provide: "UserRepo", useClass: PrismaUserRepo }, JwtService],
 })
 export class MachineModule { }

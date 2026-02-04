@@ -8,4 +8,4 @@ import { BcryptService } from "./bcrypt.service";
     }],
     exports: ['HashService']
 })
-export class AuthModule { }
+export class BCryptModule { }
