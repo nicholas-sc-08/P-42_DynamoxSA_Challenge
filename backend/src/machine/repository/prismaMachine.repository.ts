@@ -22,7 +22,7 @@ export class PrismaMachineRepo extends MachineRepo {
         return await this.prisma.machine.findUnique({ where: { name } });
     }
 
-    async createMachine(data: CreateMachineDTO & { userId: string }) {
+    async createMachine(data: CreateMachineDTO) {
         return await this.prisma.machine.create({ data });
     }
 

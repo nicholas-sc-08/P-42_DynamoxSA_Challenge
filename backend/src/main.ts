@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
   const config = new DocumentBuilder()
     .setTitle("Dynamox Challenge API")
     .setDescription("API to monitoration of sensors and industrial machines")
@@ -18,6 +17,7 @@ async function bootstrap() {
 
   app.enableCors({ origin: true, credentials: true });
   app.use(cookieParser());
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

@@ -1,27 +1,23 @@
-import { Body, Controller, Post, Res } from "@nestjs/common";
-import { AuthService } from "./auth.service";
-import { loginDTO } from "./dto/login.dto";
-import type { Response } from "express";
+import { Controller, Get, Res } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 
-@Controller("auth")
+@Controller("/auth")
 export class AuthController {
-    constructor(private readonly authService: AuthService) { }
+    constructor(private jwtService: JwtService) { }
 
-    @Post("login")
-    async login(@Body() data: loginDTO, @Res({ passthrough: true }) res: Response) {
-        const token = await this.authService.login(data);
-        res.cookie('acess_token', token, {
-            httpOnly: true,
-            secure: false,
-            maxAge: 24 * 60 * 60 * 1000
+    @Get('login')
+    async login(@Res({ passthrough: true }) res) {
+        const payload = { userId: "123", email: "dynamox@gmail.com", password: "123456" };
+        res.cookie("user_token", this.jwtService.sign(payload), {
+            expiresIn: Date.now() + 3600000
         });
-
-        return { message: "Authenticated" };
+        
+        return { message: "The user id is 123 to manage the machines" };
     }
 
-    @Post("logout")
-    async logout(@Res({ passthrough: true }) res: Response) {
-        res.clearCookie('acess_token');
-        return { message: "Logout with sucess" };
+    @Get("logout")
+    async logout(@Res({ passthrough: true }) res) {
+        res.clearCookie("user_token");
+        return { message: "Logout sucessfully!"};
     }
 }

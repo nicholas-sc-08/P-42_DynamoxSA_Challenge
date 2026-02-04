@@ -1,12 +1,11 @@
-import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { MachineRepo } from './repository/machine.repository';
 import { CreateMachineDTO } from './dto/createMachine.dto';
 import { UpdateMachineDTO } from './dto/updateMachine.dto';
-import { UserRepo } from 'src/user/repository/user.repository';
 
 @Injectable()
 export class MachineService {
-    constructor(@Inject("MachineRepo") private readonly machineRepo: MachineRepo, @Inject("UserRepo") private readonly userRepo: UserRepo) { }
+    constructor(@Inject("MachineRepo") private readonly machineRepo: MachineRepo) { }
 
     async findAllMachines(userId: string) {
         return await this.machineRepo.findManyByUser(userId);
