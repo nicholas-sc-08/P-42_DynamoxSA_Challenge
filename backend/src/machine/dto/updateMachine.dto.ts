@@ -7,4 +7,7 @@ export class UpdateMachineDTO {
 
     @IsOptional() @IsEnum(MachineType) @IsNotEmpty()
     type?: MachineType;
+
+    @IsString() @IsNotEmpty()
+    userId: string;
 }

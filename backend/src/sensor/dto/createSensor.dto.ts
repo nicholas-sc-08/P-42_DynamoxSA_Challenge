@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { ModelName } from "@prisma/client";
 import { IsEnum, IsNotEmpty, IsString, IsUUID } from "class-validator";
 
