@@ -1,12 +1,20 @@
-import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { SensorRepo } from "./repository/sensor.repository";
 import { CreateSensorDTO } from "./dto/createSensor.dto";
 import { UpdateSensorDTO } from "./dto/updateSensor.dto";
 import { MonitoringPointRepo } from "src/monitoringPoint/repository/monitoringPoint.repository";
+import { MachineRepo } from "src/machine/repository/machine.repository";
 
 @Injectable()
 export class SensorService {
-    constructor(@Inject("SensorRepo") private readonly sensorRepo: SensorRepo, @Inject("MonitoringPointRepo") private readonly monitoringPoint: MonitoringPointRepo) { }
+    constructor(@Inject("SensorRepo") private readonly sensorRepo: SensorRepo, @Inject("MonitoringPointRepo") private readonly monitoringPoint: MonitoringPointRepo, @Inject("MachineRepo") private readonly machineRepo: MachineRepo) { }
+
+    private validatePumpModel(machineType: string, model: string) {
+        const isInvalid = machineType == "Pump" && (model == "TcAg" || model == "TcAs");
+        if (isInvalid) {
+            throw new BadRequestException(`Machines of type 'Pump' can only be monitored by HF_PLUS sensors. Model ${model} is not allowed.`);
+        }
+    }
 
     async findManySensors() {
         return this.sensorRepo.findManySensors();
@@ -26,10 +34,22 @@ export class SensorService {
             throw new ConflictException(`Sensor with Uid ${data.sensorUid} already exists!`);
         }
 
-        const monitoringPointExists = await this.monitoringPoint.findMonitoringPointById(data.monitoringPointId);
+        const monitoringPointExists = await this.sensorRepo.findSensorByMonitoringPointId(data.monitoringPointId);
         if (monitoringPointExists) {
             throw new ConflictException(`Sensor with Monitoring Point Id ${data.monitoringPointId} already exists!`);
         }
+
+        const monitorPoint = await this.monitoringPoint.findMonitoringPointById(data.monitoringPointId);
+        if (!monitorPoint) {
+            throw new NotFoundException(`Monitoring Point ${data.monitoringPointId} does not exist!`);
+        }
+
+        const machine = await this.machineRepo.findUniqueMachine(monitorPoint.machineId);
+        if (!machine) {
+            throw new NotFoundException(`Machine linked to point ${monitorPoint.id} not found!`);
+        }
+
+        this.validatePumpModel(machine.type, data.model);
 
         return this.sensorRepo.createSensor(data);
     }
@@ -52,7 +72,7 @@ export class SensorService {
             if (sensorWithMonitoringPointId) {
                 throw new ConflictException(`Sensor with Monitoring Point Id ${data.monitoringPointId} already exists!`);
             }
-        }   
+        }
 
         return await this.sensorRepo.updateSensor(data, id);
     }

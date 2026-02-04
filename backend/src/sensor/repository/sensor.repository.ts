@@ -7,6 +7,7 @@ import { UpdateSensorDTO } from "../dto/updateSensor.dto";
 export abstract class SensorRepo {
     abstract findManySensors(): Promise<Sensor[]>;
     abstract findUniqueSensor(id: string): Promise<Sensor | null>;
+    abstract findSensorByMonitoringPointId(monitoringPointId: string): Promise<Sensor | null>;
     abstract findSensorByUid(sensorUid: string): Promise<Sensor | null>;
     abstract createSensor(data: CreateSensorDTO): Promise<Sensor>;
     abstract updateSensor(data: UpdateSensorDTO, id: string): Promise<Sensor>;

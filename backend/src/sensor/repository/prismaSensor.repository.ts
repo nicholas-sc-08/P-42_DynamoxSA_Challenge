@@ -22,6 +22,10 @@ export class PrismaSensorRepo extends SensorRepo {
         return await this.prisma.sensor.findUnique({ where: { sensorUid } });
     }
 
+    async findSensorByMonitoringPointId(monitoringPointId: string) {
+        return await this.prisma.sensor.findUnique({ where: { monitoringPointId } });
+    }
+
     async createSensor(data: CreateSensorDTO) {
         return await this.prisma.sensor.create({ data });
     }

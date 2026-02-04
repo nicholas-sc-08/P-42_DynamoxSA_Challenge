@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { SensorService } from "src/sensor/sensor.service";
 import { CreateSensorDataDTO } from "./dto/updateSensorData.dto";
 import { SensorDataService } from "./sensorData.service";
@@ -13,7 +13,7 @@ export class SensorDataController {
     }
 
     @Post()
-    async createSensorData(data: CreateSensorDataDTO) {
+    async createSensorData(@Body() data: CreateSensorDataDTO) {
         return await this.sensorDataService.createSensorData(data);
     }
 }
