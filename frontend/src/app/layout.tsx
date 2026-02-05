@@ -4,6 +4,7 @@ import "./globals.css";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { Providers } from "./redux/Providers";
+import { CssBaseline } from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,9 +28,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <meta name="viewport" content="initial-scale=1, width=device-width" />
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
-        {children}
+          <CssBaseline />
+          {children}
         </Providers>
       </body>
     </html>

@@ -14,12 +14,9 @@ export const theme = createTheme({
             default: "#f5f5f5",
             paper: "#ffffff"
         },
-    },
-    typography: {
-        fontFamily: "inherit",
-        h4: {
-            fontWeight: 600,
-            color: "#70163c"
+        text: {
+            primary: "#333333",
+            secondary: "#666666"
         }
     }
 });
