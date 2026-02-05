@@ -2,7 +2,9 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } fro
 import { MonitoringPointService } from "./monitoringPoint.service";
 import { CreateMonitoringPointDTO } from "./dto/createMonitoringPoint.dto";
 import { updateMonitoringPointDTO } from "./dto/updateMonitoringPoint.dto";
+import { JWTGuard } from "src/auth/jwt.guard";
 
+@UseGuards(JWTGuard)
 @Controller("monitoring-point")
 export class MonitoringPointController {
     constructor(private readonly monitoringPointService: MonitoringPointService) { }

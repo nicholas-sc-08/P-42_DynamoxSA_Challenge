@@ -1,11 +1,23 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { SensorService } from "src/sensor/sensor.service";
 import { CreateSensorDataDTO } from "./dto/updateSensorData.dto";
 import { SensorDataService } from "./sensorData.service";
+import { JWTGuard } from "src/auth/jwt.guard";
 
+@UseGuards(JWTGuard)
 @Controller("sensor-data")
 export class SensorDataController {
     constructor(private readonly sensorDataService: SensorDataService) { }
+
+    @Get()
+    async findAllSensorData() {
+        return await this.sensorDataService.findAllSensorData();
+    }
+
+    @Get("count/:sensorId")
+    async countSensorData(@Param("sensorId") sensorId: string) {
+        return await this.sensorDataService.countSensorData(sensorId);
+    }
 
     @Get(":sensorId")
     async findManySensorData(@Param("sensorId") sensorId: string, @Query("start") start: string, @Query("end") end: string) {
@@ -15,5 +27,10 @@ export class SensorDataController {
     @Post()
     async createSensorData(@Body() data: CreateSensorDataDTO) {
         return await this.sensorDataService.createSensorData(data);
+    }
+
+    @Delete(":id")
+    async deleteSensorData(@Param("id") id: string) {
+        return await this.sensorDataService.deleteSensorData(id);
     }
 }

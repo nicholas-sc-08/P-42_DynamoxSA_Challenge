@@ -1,4 +1,4 @@
-# ⚙️ DynamoxSA Challenge - Backend
+# ⚙️ Dynamox Challenge - Backend
 
 This is a aplication server which of industry machines, you can have monitoring points of machines and sensors for those monitoring points.
 
@@ -12,4 +12,3 @@ This is a aplication server which of industry machines, you can have monitoring 
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=black)
 ![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
 ![npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
-
