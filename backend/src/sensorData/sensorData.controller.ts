@@ -14,6 +14,11 @@ export class SensorDataController {
         return await this.sensorDataService.findAllSensorData();
     }
 
+    @Get("metrics/:sensorId")
+    async getMetrics(@Param("sensorId") sensorId: string) {
+        return await this.sensorDataService.getMetrics(sensorId);
+    }
+
     @Get("count/:sensorId")
     async countSensorData(@Param("sensorId") sensorId: string) {
         return await this.sensorDataService.countSensorData(sensorId);
