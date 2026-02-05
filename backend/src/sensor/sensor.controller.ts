@@ -30,7 +30,7 @@ export class SensorController {
     }
 
     @Delete(":id")
-    async deleteSensor(@Param() id: string) {
+    async deleteSensor(@Param("id") id: string) {
         return await this.sensorService.deleteSensor(id);
     }
 }

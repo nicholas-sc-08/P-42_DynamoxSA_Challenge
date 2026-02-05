@@ -31,7 +31,7 @@ export class MonitoringPointController {
     }
 
     @Delete(":id")
-    async deleteMonitoringPoint(@Param() id: string) {
+    async deleteMonitoringPoint(@Param("id") id: string) {
         return await this.monitoringPointService.deleteMonitoringPoint(id);
     }
 }
