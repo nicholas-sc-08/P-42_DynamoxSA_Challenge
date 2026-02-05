@@ -6,6 +6,7 @@ export class CreateSensorDTO {
     @IsNotEmpty() @IsString()
     sensorUid: string;
 
+    @ApiProperty({ enum: ModelName })
     @IsNotEmpty() @IsEnum(ModelName, { message: 'Model must be TcAg, TcAs or HF_PLUS' })
     model: ModelName;
 
