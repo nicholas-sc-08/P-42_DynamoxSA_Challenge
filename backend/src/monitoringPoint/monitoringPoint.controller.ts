@@ -26,7 +26,7 @@ export class MonitoringPointController {
     }
 
     @Put(":id")
-    async updateMonitoringPoint(@Param() id: string, @Body() data: updateMonitoringPointDTO) {
+    async updateMonitoringPoint(@Param("id") id: string, @Body() data: updateMonitoringPointDTO) {
         return await this.monitoringPointService.updateMonitoringPoint(data, id);
     }
 
