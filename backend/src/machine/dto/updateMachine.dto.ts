@@ -1,13 +1,15 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
 import { MachineType } from "@prisma/client";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateMachineDTO {
-    @IsOptional() @IsString() @IsNotEmpty()
+    @IsOptional() @IsNotEmpty() @IsString() @MinLength(3, {message: "Machine name must have at least 3 characters long"})
     name?: string;
 
-    @IsOptional() @IsEnum(MachineType) @IsNotEmpty()
+    @ApiProperty({enum: MachineType})
+    @IsOptional() @IsEnum(MachineType, {message: "Machine type must be either Pump or Fan!"})
     type?: MachineType;
 
-    @IsString() @IsNotEmpty()
-    userId: string;
+    @IsOptional() @IsNotEmpty() @IsString()
+    userId?: string;
 }

@@ -26,12 +26,12 @@ export class MonitoringPointController {
     }
 
     @Put(":id")
-    async updateMonitoringPoint(@Param() id: string, @Body() data: updateMonitoringPointDTO) {
+    async updateMonitoringPoint(@Param("id") id: string, @Body() data: updateMonitoringPointDTO) {
         return await this.monitoringPointService.updateMonitoringPoint(data, id);
     }
 
     @Delete(":id")
-    async deleteMonitoringPoint(@Param() id: string) {
+    async deleteMonitoringPoint(@Param("id") id: string) {
         return await this.monitoringPointService.deleteMonitoringPoint(id);
     }
 }

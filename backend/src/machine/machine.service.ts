@@ -27,6 +27,10 @@ export class MachineService {
             throw new ConflictException(`Machine with name ${data.name} already exists!`);
         }
 
+        if(userId != "123") {
+            throw new ConflictException("User id must be valid!");
+        }
+
         return await this.machineRepo.createMachine(data, userId);
     }
 

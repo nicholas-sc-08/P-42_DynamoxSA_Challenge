@@ -2,10 +2,11 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { MonitoringPointRepo } from "./repository/monitoringPoint.repository";
 import { CreateMonitoringPointDTO } from "./dto/createMonitoringPoint.dto";
 import { updateMonitoringPointDTO } from "./dto/updateMonitoringPoint.dto";
+import { MachineRepo } from "src/machine/repository/machine.repository";
 
 @Injectable()
 export class MonitoringPointService {
-    constructor(@Inject("MonitoringPointRepo") private readonly monitoringPointRepo: MonitoringPointRepo) { }
+    constructor(@Inject("MonitoringPointRepo") private readonly monitoringPointRepo: MonitoringPointRepo, @Inject("MachineRepo") private readonly machineRepo: MachineRepo) { }
 
     async findAllPaginatedPoints(page: number) {
         return await this.monitoringPointRepo.findAllPaginatedPoints(page);
@@ -20,6 +21,10 @@ export class MonitoringPointService {
     }
 
     async createMonitoringPoint(data: CreateMonitoringPointDTO) {
+        const machineExists = await this.machineRepo.findUniqueMachine(data.machineId);
+        if (!machineExists) {
+            throw new NotFoundException(`Machine with id ${data.machineId} does not exists!`);
+        }
         return await this.monitoringPointRepo.createMonitoringPoint(data);
     }
 
@@ -27,6 +32,10 @@ export class MonitoringPointService {
         const monitoringPointExists = await this.monitoringPointRepo.findMonitoringPointById(id);
         if (monitoringPointExists) {
             return await this.monitoringPointRepo.updateMonitoringPoint(data, id);
+        }
+        const machineExists = await this.machineRepo.findUniqueMachine(data.machineId);
+        if (!machineExists) {
+            throw new NotFoundException(`Machine with id ${data.machineId} does not exists!`);
         }
         throw new NotFoundException(`Monitoring Point with id ${id} does not exists!`);
     }
