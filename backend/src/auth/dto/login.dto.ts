@@ -1,12 +1,9 @@
-import { IsEmail, IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, IsUUID, MinLength } from "class-validator";
 
 export class loginDTO {
-    @IsUUID() @IsNotEmpty() @IsString()
-    id: string;
-
-    @IsEmail() @IsNotEmpty() @IsString()
+    @IsEmail({}, { message: "E-mail is invalid" }) @IsNotEmpty() @IsString()
     email: string;
 
-    @IsString() @IsNotEmpty()
+    @IsString() @IsNotEmpty() @MinLength(6, { message: "Password must have 6 characters!" })
     password: string;
 }

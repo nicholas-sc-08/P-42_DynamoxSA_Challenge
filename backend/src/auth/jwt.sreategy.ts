@@ -19,14 +19,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    private static extractJWT(req: RequestType): string | null {        
-        if(req.cookies && 'user_token' in req.cookies && req.cookies.user_token.length > 0) {
+    private static extractJWT(req: RequestType): string | null {
+        if (req.cookies && 'user_token' in req.cookies && req.cookies.user_token.length > 0) {
             return req.cookies.user_token;
         }
         return null;
     }
 
-    async validate(payload: loginDTO) {
+    async validate(payload: loginDTO & { id: string }) {
         return { userId: payload.id, email: payload.email, password: payload.password };
     }
 }
