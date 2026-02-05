@@ -9,11 +9,27 @@ export class PrismaSensorDataRepo extends SensorDataRepo {
         super();
     }
 
+    async findAllSensorData() {
+        return await this.prisma.sensorData.findMany();
+    }
+
+    async countSensorData(sensorId: string) {
+        return await this.prisma.sensorData.count({ where: { sensorId: sensorId ? sensorId : undefined } });
+    }
+
     async findManySensorData(sensorId: string, startTime: Date, endTime: Date) {
         return await this.prisma.sensorData.findMany({ where: { sensorId, timestamp: { gte: startTime, lte: endTime } }, orderBy: { timestamp: "asc" } });
     }
 
+    async findUniqueSensorData(id: string) {
+        return await this.prisma.sensorData.findUnique({ where: { id } });
+    }
+
     async createSensorData(data: CreateSensorDataDTO) {
         return await this.prisma.sensorData.create({ data: data as any });
+    }
+
+    async deleteSensorData(id: string) {
+        await this.prisma.sensorData.delete({ where: { id } });
     }
 }

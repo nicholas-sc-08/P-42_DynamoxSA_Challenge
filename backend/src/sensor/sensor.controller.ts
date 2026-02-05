@@ -2,7 +2,9 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nes
 import { SensorService } from "./sensor.service";
 import { CreateSensorDTO } from "./dto/createSensor.dto";
 import { UpdateSensorDTO } from "./dto/updateSensor.dto";
+import { JWTGuard } from "src/auth/jwt.guard";
 
+@UseGuards(JWTGuard)
 @Controller("sensor")
 export class SensorController {
     constructor(private readonly sensorService: SensorService) { }
