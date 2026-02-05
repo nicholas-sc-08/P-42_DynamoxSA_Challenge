@@ -11,6 +11,10 @@ export class SensorDataService {
         return await this.sensorDataRepo.findAllSensorData();
     }
 
+    async getMetrics(sensorId: string) {
+        return await this.sensorDataRepo.getMetrics(sensorId);
+    }
+
     async countSensorData(sensorId: string) {
         return await this.sensorDataRepo.countSensorData(sensorId);
     }
